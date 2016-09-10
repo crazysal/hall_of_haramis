@@ -19,5 +19,9 @@ from predict_model import views as predict_model
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'^$', predict_model.landing),
     url(r'^make_predictions_api', predict_model.make_predictions_api, name='make_predictions_api'),
+    url(r'^all_tweets', predict_model.all_tweets, name='all_tweets'),
+    url(r'^change_status', predict_model.change_status, name='change_status'),
+    
 ]
