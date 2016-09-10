@@ -59,7 +59,7 @@ namespace :deploy do
 
   task :restart do
     on roles(:app), in: :sequence, wait: 5 do
-      execute("cd #{fetch(:deploy_to)}; source bin/activate && cd #{fetch(:deploy_to)}/current/predictions/ && pip install -r requirement.txt &&   pip install gunicorn;pkill -9 gunicorn;  nohup gunicorn predictions.wsgi -w 8 --daemon")
+      execute("cd #{fetch(:deploy_to)} && source bin/activate && cd #{fetch(:deploy_to)}/current/predictions/ &&   pip install gunicorn;pkill -9 gunicorn;  nohup gunicorn predictions.wsgi -w 8 --daemon")
     end
   end
 end
