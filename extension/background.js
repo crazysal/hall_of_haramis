@@ -15,8 +15,7 @@ function generate_tweet_array(){
 	var tweet_array = [];
 
     $(".js-stream-item.stream-item.stream-item").each(function(){
-    	if(!$.cookie($(this).find('div').attr('data-tweet-id')) && 
-    		$(this).find('div').find('.TweetTextSize').text() !== censored_str){
+    	if(!localStorage.getItem($(this).find('div').attr('data-tweet-id'))){
     		var tweet_obj = {
 		        "data-tweet-id" : $(this).find('div').attr('data-tweet-id'),
 		        "data-user-id" : $(this).find('div').attr('data-user-id'),
@@ -27,6 +26,15 @@ function generate_tweet_array(){
 		        "tweet-text" : $(this).find('div').find('.TweetTextSize').text(),
 		    };
 		    tweet_array.push(tweet_obj);
+	    }else{
+			var tweet_obj = localStorage.getItem($(this).find('div').attr('data-tweet-id'));
+   			tweet_obj = JSON.parse(tweet_obj);
+   			if(tweet_obj.label == "neg"){
+   				$("div").find("[data-tweet-id='"+tweet_obj["data-tweet-id"]+"']")
+               .find('.TweetTextSize').html(censored_str[Math.floor(Math.random() * 3) + 0]);
+               $("div").find("[data-tweet-id='"+tweet_obj["data-tweet-id"]+"']")
+               .find('.js-tweet-text-container').next().html("");
+   			}
 	    }
     });
 
@@ -68,7 +76,8 @@ function blocked_content(tweet_result_arr){
               $("div").find("[data-tweet-id='"+tweet_result_arr[i]["data-tweet-id"]+"']")
               .find('.js-tweet-text-container').next().html("");
             }
-            $.cookie(tweet_result_arr[i]["data-tweet-id"], JSON.stringify(tweet_result_arr[i]), { expires : 1 });
+            localStorage.setItem(tweet_result_arr[i]["data-tweet-id"], JSON.stringify(tweet_result_arr[i]));
+            //$.cookie(tweet_result_arr[i]["data-tweet-id"], JSON.stringify(tweet_result_arr[i]), { expires : 1 });
   	  	}
 
 };
