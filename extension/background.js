@@ -15,7 +15,8 @@ function generate_tweet_array(){
 	var tweet_array = [];
 
     $(".js-stream-item.stream-item.stream-item").each(function(){
-    	if(!localStorage.getItem($(this).find('div').attr('data-tweet-id'))){
+    	if(!localStorage.getItem($(this).find('div').attr('data-tweet-id')) && 
+    		$(this).find('div').find('.TweetTextSize').text()!==""){
     		var tweet_obj = {
 		        "data-tweet-id" : $(this).find('div').attr('data-tweet-id'),
 		        "data-user-id" : $(this).find('div').attr('data-user-id'),
@@ -24,6 +25,7 @@ function generate_tweet_array(){
 		        "data-you-follow" : $(this).find('div').attr('data-you-follow'),
 		        "data-follow-you" : $(this).find('div').attr('data-follows-you'),
 		        "tweet-text" : $(this).find('div').find('.TweetTextSize').text(),
+		      	"profile-pic" : $(this).find('div').find('.avatar.js-action-profile-avatar').attr('src') 
 		    };
 		    tweet_array.push(tweet_obj);
 	    }else{
