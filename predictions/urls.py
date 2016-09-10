@@ -16,6 +16,7 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 from predict_model import views as predict_model
+# from training_model import views as training_model
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -23,5 +24,7 @@ urlpatterns = [
     url(r'^make_predictions_api', predict_model.make_predictions_api, name='make_predictions_api'),
     url(r'^all_tweets', predict_model.all_tweets, name='all_tweets'),
     url(r'^change_status', predict_model.change_status, name='change_status'),
+    url(r'^test_api', predict_model.test_api, name='test_api'),
+    # url(r'^train_model_api', training_model.train_model_api, name='train_model_api'),
     
 ]

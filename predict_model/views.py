@@ -4,7 +4,10 @@ from django.http import HttpResponse,JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
 import random
+import prediction_helper as p
 
+# import prediction_helper as p
+# print p
 
 
 
@@ -15,10 +18,11 @@ def make_predictions_api(request):
         response=[]
         tweets=[]
         data=json.loads(request.body)
-        print data
+     
         for x in data:
-            tweets.append(predict_model.tweets(data_tweet_id=x['data-tweet-id'],data_user_id=x['data-user-id'],data_permalink_path=x['data-permalink-path'],data_screen_name=x['data-screen-name'],data_you_follow=x['data-you-follow'],data_follow_you=x['data-follow-you'],tweet_text=x['tweet-text'],machine_label="pos",confidence="100"))      
-            response.append({"label":random.choice(sent),"confidence":"80","data-tweet-id":x['data-tweet-id']})
+            sentiment=p.sentiment(x['tweet-text'])
+            tweets.append(predict_model.tweets(data_tweet_id=x['data-tweet-id'],data_user_id=x['data-user-id'],data_permalink_path=x['data-permalink-path'],data_screen_name=x['data-screen-name'],data_you_follow=x['data-you-follow'],data_follow_you=x['data-follow-you'],tweet_text=x['tweet-text'],machine_label=sentiment[0],confidence=sentiment[1]))      
+            response.append({"label":sentiment[0],"confidence":sentiment[1],"data-tweet-id":x['data-tweet-id']})
         predict_model.tweets.objects.bulk_create(tweets,batch_size=100)           
         return HttpResponse(json.dumps(response),status=200,content_type='application/json')  
 
@@ -54,4 +58,11 @@ def change_status(request):
 def landing(request):
   return HttpResponse(json.dumps({"data":"Hack hack hack"}),status=200,content_type='application/json')  
 
+
+@csrf_exempt
+def test_api(request):  
+  x=json.loads(request.body)  
+  sentiments=p.sentiment(x['tweet-text'])
+  final_data={"confidence":sentiments[1],"label":sentiments[0]}
+  return HttpResponse(json.dumps(final_data),status=200,content_type='application/json')  
 
