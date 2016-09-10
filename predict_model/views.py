@@ -40,7 +40,7 @@ def all_tweets(request):
 
 
 @csrf_exempt    
-def change_satus(request):
+def change_status(request):
     try:  
         for data in json.loads(request.body):       
             predict_model.tweets.objects.filter(data_tweet_id=data['data_tweet_id']).update(human_label=data['human_label'])   
@@ -48,5 +48,8 @@ def change_satus(request):
         return HttpResponse(json.dumps({"data":"done"}),status=200,content_type='application/json') 
     except Exception as e:
         return HttpResponse(str(e),status=400,content_type='application/json')  
+
+def landing(request):
+  return HttpResponse(json.dumps({"data":"Hack hack hack"}),status=200,content_type='application/json')  
 
 
