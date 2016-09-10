@@ -5,8 +5,8 @@
   "description": "For blocking content",
   "browser_action": {
     "name": "",
-    "icons": ["icon.png"],
-    "default_icon": "icon.png",
+    "icons": ["ext-icon.png"],
+    "default_icon": "ext-icon.png",
     "default_popup": ""
   },
   "content_scripts": [ {
