@@ -77,7 +77,7 @@ WSGI_APPLICATION = 'predictions.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE':'django.db.backends.mysql',
-        'NAME': 'predictions',
+        'NAME': 'competetions',
         'USER': 'root',
         'PASSWORD': 'root',
         'HOST': 'localhost',
