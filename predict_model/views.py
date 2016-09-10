@@ -26,4 +26,27 @@ def make_predictions_api(request):
 
 
 
+def all_tweets(request):
+    try:
+        limit=request.GET['num']
+        offset=request.GET['offset']
+        # print offset
+        tweet=predict_model.tweets.objects.raw("select * from tweets where human_label='' group by (data_tweet_id) limit "+limit+" OFFSET "+offset+"")    
+        return render(request, 'tweets.html', {"data":tweet})        
+    except Exception, e:
+        return HttpResponse(str(e),status=400,content_type='application/json')
+    
+    
+
+
+@csrf_exempt    
+def change_satus(request):
+    try:  
+        for data in json.loads(request.body):       
+            predict_model.tweets.objects.filter(data_tweet_id=data['data_tweet_id']).update(human_label=data['human_label'])   
+
+        return HttpResponse(json.dumps({"data":"done"}),status=200,content_type='application/json') 
+    except Exception as e:
+        return HttpResponse(str(e),status=400,content_type='application/json')  
+
 
