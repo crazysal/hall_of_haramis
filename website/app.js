@@ -17,11 +17,11 @@ app.use(function (req, res, next) {
   res.header("Cache-Control", "no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0");
   next();
 });
-app.get('/', function (req, res) {
-  console.log(mysql)
-  res.send('Hello World')
-  mysql.destroy();
-})
+app.use('/', express.static(__dirname + '/view'));
+/*app.get('/hoh', function (req, res) {
+  res.send("./view/hall.html")
+
+})*/
 app.get('/hall', function (req, res) {
   var sql_neg = "select data_screen_name, count(*) as negative_total, tweet_text from tweets  where machine_label='neg' " + "group by data_screen_name Order by count(*) desc limit 15;"
   mysql.query(sql_neg, function (err, rows1, fields) {
