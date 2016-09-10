@@ -1,0 +1,16 @@
+{
+  "name": "HOH",
+  "manifest_version": 2,
+  "version" : "1.0",
+  "description": "For blocking content",
+  "browser_action": {
+    "name": "",
+    "icons": ["icon.png"],
+    "default_icon": "icon.png",
+    "default_popup": ""
+  },
+  "content_scripts": [ {
+    "js": [ "jquery.min.js", "js-cookie-min.js", "background.js" ],
+    "matches": [ "http://*/*", "https://*/*"]
+  }]
+}
