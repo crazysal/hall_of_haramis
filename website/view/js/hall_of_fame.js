@@ -11,7 +11,7 @@ var toggle_visibility = function (id) {
 $(function () {
   $.ajax({
     type: "GET",
-    url: "http://localhost:3012/hall",
+    url: "/hall",
     contentType: "application/json; charset=utf-8",
     crossDomain: true,
     success: function (data) {
