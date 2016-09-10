@@ -9,7 +9,7 @@ $(function ()
     success: function (data)
     {
       $(".result").html(data);
-      console.log("#################################");
+      console.log("data", JSON.stringify(data));
       var r = new Array(),
         j = -1;
       data = [

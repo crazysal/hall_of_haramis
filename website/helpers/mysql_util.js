@@ -4,7 +4,7 @@ var connection = mysql.createConnection(
   host: process.env.DB_HOST || 'localhost',
   user: process.env.DB_USER || 'root',
   password: process.env.DB_PASS || 'jacksnip',
-  database: competetions,
+  database: "competetions",
   port: 3306
 });
 connection.connect(function (err)
