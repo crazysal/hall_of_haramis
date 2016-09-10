@@ -12,26 +12,26 @@ from statistics import mode
 from nltk.tokenize import word_tokenize
 import re
 
-class VoteClassifier(ClassifierI):
-    def __init__(self, *classifiers):
-        self._classifiers = classifiers
+# class VoteClassifier(ClassifierI):
+#     def __init__(self, *classifiers):
+#         self._classifiers = classifiers
 
-    def classify(self, features):
-        votes = []
-        for c in self._classifiers:
-            v = c.classify(features)
-            votes.append(v)
-        return mode(votes)
+#     def classify(self, features):
+#         votes = []
+#         for c in self._classifiers:
+#             v = c.classify(features)
+#             votes.append(v)
+#         return mode(votes)
 
-    def confidence(self, features):
-        votes = []
-        for c in self._classifiers:
-            v = c.classify(features)
-            votes.append(v)
+#     def confidence(self, features):
+#         votes = []
+#         for c in self._classifiers:
+#             v = c.classify(features)
+#             votes.append(v)
 
-        choice_votes = votes.count(mode(votes))
-        conf = choice_votes / len(votes)
-        return conf
+#         choice_votes = votes.count(mode(votes))
+#         conf = choice_votes / len(votes)
+#         return conf
     
 short_pos = open("pos.txt","r").read()
 short_neg = open("neg.txt","r").read()
@@ -42,8 +42,8 @@ documents = []
 
 
 #  j is adject, r is adverb, and v is verb
-#allowed_word_types = ["J","R","V"]
-allowed_word_types = ["J"]
+allowed_word_types = ["J","R","V"]
+# allowed_word_types = ["J"]
 
 for p in short_pos.split('\n'):
     p=re.sub('[^A-Za-z0-9]+', ' ', p)
