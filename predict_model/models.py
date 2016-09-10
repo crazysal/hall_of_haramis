@@ -22,7 +22,7 @@ class tweets(models.Model):
   confidence=models.IntegerField(default=None) 
   created_at=models.DateTimeField(auto_now_add=True)
   updated_at=models.DateTimeField(auto_now=True)
-
+  profile_pic=models.CharField(max_length=255,blank=True)
 
   def __str__(self):              # __unicode__ on Python 2
         return self.id
