@@ -32,7 +32,7 @@ import re
 #         choice_votes = votes.count(mode(votes))
 #         conf = choice_votes / len(votes)
 #         return conf
-    
+  
 short_pos = open("pos.txt","r").read()
 short_neg = open("neg.txt","r").read()
 
@@ -76,7 +76,7 @@ save_documents.close()
 all_words = nltk.FreqDist(all_words)
 
 
-word_features = list(all_words.keys())[:5000]
+word_features = list(all_words.keys())
 
 
 save_word_features = open("pickled_algos/word_features5k.pickle","wb")
