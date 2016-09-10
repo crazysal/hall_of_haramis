@@ -15,7 +15,9 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
+from predict_model import views as predict_model
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'^make_predictions_api', predict_model.make_predictions_api, name='make_predictions_api'),
 ]
