@@ -19,7 +19,7 @@ set :format, :airbrussh
 
 
 # Default value for keep_releases is 5
-set :keep_releases, 10
+set :keep_releases, 20
 
 
 namespace :deploy do
@@ -50,7 +50,7 @@ namespace :deploy do
     on roles(:db), in: :sequence, wait: 5 do
       within "#{fetch(:deploy_to)}/current/" do
         with RAILS_ENV: fetch(:rails_env) do
-          execute :bundle, "install"
+          # execute :bundle, "install"
           # execute :rake, "db:migrate"
         end#end of with
       end#end of within
