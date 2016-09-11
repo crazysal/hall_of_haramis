@@ -97,8 +97,9 @@ featuresets = [(find_features(rev), category) for (rev, category) in documents]
 random.shuffle(featuresets)
 print(len(featuresets))
 
-testing_set = featuresets[100:]
-training_set = featuresets
+
+testing_set = featuresets[:2000]
+training_set = featuresets[7000:]
 
 
 classifier = nltk.NaiveBayesClassifier.train(training_set)
