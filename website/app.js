@@ -19,7 +19,7 @@ app.use(function (req, res, next) {
 });
 app.use('/', express.static(__dirname + '/view'));
 app.get('/hall', function (req, res) {
-  var sql_neg = "select data_screen_name, profile_pic, count(*) as negative_total, tweet_text from tweets  where machine_label='neg' " + "group by data_screen_name Order by count(*) desc limit 15;"
+  var sql_neg = "select data_screen_name as dsn, count(*) as negative_total, ( select tweet_text from tweets where data_screen_name = dsn order by created_at desc limit 1) from tweets  where machine_label='neg' group by data_screen_name Order by count(*) desc limit 15;"
   mysql.query(sql_neg, function (err, rows1, fields) {
     if (err) throw err;
     var data_screen_name = []
