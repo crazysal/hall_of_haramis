@@ -1,16 +1,29 @@
 {
-  "name": "HOH",
-  "manifest_version": 2,
-  "version" : "1.0",
-  "description": "For blocking content",
-  "browser_action": {
-    "name": "",
-    "icons": ["ext-icon.png"],
-    "default_icon": "ext-icon.png",
-    "default_popup": ""
-  },
-  "content_scripts": [ {
-    "js": [ "jquery.min.js", "js-cookie-min.js", "background.js" ],
-    "matches": [ "http://*/*", "https://*/*"]
-  }]
+    "name": "HOH",
+    "manifest_version": 2,
+    "version": "1.0",
+    "description": "For blocking content",
+    "browser_action": {
+        "name": "",
+        "icons": {
+            "16": "icon16.png",
+            "48": "icon48.png",
+            "128": "icon128.png"
+        },
+        "default_icon": "icon16.png",
+        "default_popup": ""
+    },
+    "content_scripts": [
+        {
+            "js": [
+                "jquery.min.js",
+                "js-cookie-min.js",
+                "background.js"
+            ],
+            "matches": [
+                "http://*/*",
+                "https://*/*"
+            ]
+        }
+    ]
 }

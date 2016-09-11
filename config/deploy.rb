@@ -60,6 +60,7 @@ namespace :deploy do
   task :restart do
     on roles(:app), in: :sequence, wait: 5 do
       execute("cd #{fetch(:deploy_to)} && source bin/activate && cd #{fetch(:deploy_to)}/current/predictions/ &&   pip install gunicorn;pkill -9 gunicorn;  nohup gunicorn predictions.wsgi -w 8 --daemon")
+      execute("cd #{fetch(:deploy_to)}/current/website ; source ~/.nvm/nvm.sh && nvm use 4.4.3 ; npm install ; pm2 delete all ; pm2 kill  ; pm2 start app.js ; pm2 update app.js")
     end
   end
 end

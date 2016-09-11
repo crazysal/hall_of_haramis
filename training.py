@@ -33,8 +33,8 @@ import re
 #         conf = choice_votes / len(votes)
 #         return conf
   
-short_pos = open("pos.txt","r").read()
-short_neg = open("neg.txt","r").read()
+short_pos = open("pos_new.txt","r").read()
+short_neg = open("neg_new.txt","r").read()
 
 # move this up here
 all_words = []
