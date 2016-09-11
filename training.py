@@ -76,7 +76,7 @@ save_documents.close()
 all_words = nltk.FreqDist(all_words)
 
 
-word_features = list(all_words.keys())
+word_features = list(all_words.keys())[:5000]
 
 
 save_word_features = open("pickled_algos/word_features5k.pickle","wb")
@@ -103,7 +103,7 @@ training_set = featuresets
 
 classifier = nltk.NaiveBayesClassifier.train(training_set)
 print("Original Naive Bayes Algo accuracy percent:", (nltk.classify.accuracy(classifier, testing_set))*100)
-classifier.show_most_informative_features(15)
+classifier.show_most_informative_features(100)
 
 ###############
 save_classifier = open("pickled_algos/originalnaivebayes5k.pickle","wb")
