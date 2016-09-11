@@ -19,7 +19,7 @@ app.use(function (req, res, next) {
 });
 app.use('/', express.static(__dirname + '/view'));
 app.get('/hall', function (req, res) {
-  var sql_neg = "select data_screen_name, count(*) as negative_total, tweet_text from tweets  where machine_label='neg' " + "group by data_screen_name Order by count(*) desc limit 15;"
+  var sql_neg = "select data_screen_name, profile_pic, count(*) as negative_total, tweet_text from tweets  where machine_label='neg' " + "group by data_screen_name Order by count(*) desc limit 15;"
   mysql.query(sql_neg, function (err, rows1, fields) {
     if (err) throw err;
     var data_screen_name = []
@@ -36,18 +36,29 @@ app.get('/hall', function (req, res) {
 
         var response_obj = [];
         for (var i = 0; i < rows1.length; i++) {
-          response_obj.push({
-          "data_screen_name" : rows1[i].data_screen_name,
-          "last_tweet" : rows1[i].tweet_text,
-          "neg" : rows1[i].negative_total,
-          "all_total" : (rows2 && rows2.length > 0 ? _.filter(rows2, {
-            'data_screen_name': rows1[i].data_screen_name
-          })[0].all_total : 0),
-          "pos" : (rows3 && rows3.length > 0 ? _.filter(rows3, {
-            'data_screen_name': rows1[i].data_screen_name
-          })[0].positive_total : 0)
-          }) ; 
-          
+          var push_obj = {};
+
+          push_obj.data_screen_name = rows1[i].data_screen_name;
+          push_obj.profile_pic = rows1[i].profile_pic;
+          push_obj.last_tweet = rows1[i].tweet_text;
+          push_obj.neg =  rows1[i].negative_total;
+          if(rows2 && rows2.length > 0){
+            var all_data_arr = _.filter(rows2, {'data_screen_name': rows1[i].data_screen_name });
+            if(all_data_arr && all_data_arr.length >0){
+              push_obj.all_total = all_data_arr[0].all_total ;
+            }else{
+              push_obj.all_total = 0 ;
+            }
+          }
+          if(rows3 && rows3.length > 0){
+            var pos_data_arr = _.filter(rows3, {'data_screen_name': rows1[i].data_screen_name });
+            if(pos_data_arr && pos_data_arr.length >0 && pos_data_arr[0] && pos_data_arr[0].positive_total){
+              push_obj.pos = pos_data_arr[0].positive_total ;
+            }else{
+              push_obj.pos = 0 ;
+            }
+          }          
+         response_obj.push(push_obj);
         }
         res.send(response_obj)
       });
