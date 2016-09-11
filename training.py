@@ -103,7 +103,7 @@ training_set = featuresets
 
 classifier = nltk.NaiveBayesClassifier.train(training_set)
 print("Original Naive Bayes Algo accuracy percent:", (nltk.classify.accuracy(classifier, testing_set))*100)
-classifier.show_most_informative_features(100)
+classifier.show_most_informative_features(250)
 
 ###############
 save_classifier = open("pickled_algos/originalnaivebayes5k.pickle","wb")
