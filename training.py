@@ -97,13 +97,14 @@ featuresets = [(find_features(rev), category) for (rev, category) in documents]
 random.shuffle(featuresets)
 print(len(featuresets))
 
-testing_set = featuresets[100:]
-training_set = featuresets
+
+testing_set = featuresets[:2000]
+training_set = featuresets[7000:]
 
 
 classifier = nltk.NaiveBayesClassifier.train(training_set)
 print("Original Naive Bayes Algo accuracy percent:", (nltk.classify.accuracy(classifier, testing_set))*100)
-classifier.show_most_informative_features(100)
+classifier.show_most_informative_features(250)
 
 ###############
 save_classifier = open("pickled_algos/originalnaivebayes5k.pickle","wb")

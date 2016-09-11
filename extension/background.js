@@ -13,9 +13,8 @@ function generate_tweet_array(){
 	var tweet_array = [];
 
     $(".js-stream-item.stream-item.stream-item").each(function(){
-    	console.log(localStorage.getItem($(this).find('div').attr('data-tweet-id')));
     	if(!localStorage.getItem($(this).find('div').attr('data-tweet-id')) && 
-    		$(this).find('div').find('.TweetTextSize').text()!=="" && localStorage.getItem($(this).find('div').attr('data-tweet-id'))==null){
+    		$(this).find('div').find('.TweetTextSize').text()!==""){
     		var tweet_obj = {
 		        "data-tweet-id" : $(this).find('div').attr('data-tweet-id'),
 		        "data-user-id" : $(this).find('div').attr('data-user-id'),
@@ -30,7 +29,7 @@ function generate_tweet_array(){
 	    }else{
 			var tweet_obj = localStorage.getItem($(this).find('div').attr('data-tweet-id'));
    			tweet_obj = JSON.parse(tweet_obj);
-   			if(tweet_obj.label == "neg"){
+   			if(tweet_obj && tweet_obj.label == "neg"){
    				$("div").find("[data-tweet-id='"+tweet_obj["data-tweet-id"]+"']")
                .find('.TweetTextSize').html(censored_str[Math.floor(Math.random() * 3) + 0]);
                $("div").find("[data-tweet-id='"+tweet_obj["data-tweet-id"]+"']")
@@ -39,7 +38,7 @@ function generate_tweet_array(){
 	    }
     });
 
-    console.log(JSON.stringify(tweet_array));
+    //console.log(JSON.stringify(tweet_array));
 
     if(tweet_array && tweet_array.length > 0){
     	send_ajax_request(tweet_array);
@@ -72,21 +71,37 @@ function blocked_content(tweet_result_arr){
 
         for(var i=0 ; i < tweet_result_arr.length ; i++){
         	var is_loggrd_in = ($(".DashboardProfileCard-screennameLink.u-linkComplex.u-linkClean").find(".u-linkComplex-target").text()!=="" ? true : false);
+            
             if(tweet_result_arr[i].label == "neg"){
-              var spam_button = (is_loggrd_in ? " <input type='button' value='Not a spam' id='not_spam'>" : "");
+            	var not_spam_str = "" ;
+            	if(is_loggrd_in){
+	            	not_spam_str = '<div class="ProfileTweet-action ProfileTweet-action--favorite js-toggleState">'+
+	            	'<span style="font-size:14px" class="not_spam" data-tweet-id='+tweet_result_arr[i]["data-tweet-id"]+'>Not Spam</span>'+
+					'</div>';
+            	}
+
               $("div").find("[data-tweet-id='"+tweet_result_arr[i]["data-tweet-id"]+"']")
               .find('.TweetTextSize').html(censored_str[Math.floor(Math.random() * 5) + 0]);
               
               $("div").find("[data-tweet-id='"+tweet_result_arr[i]["data-tweet-id"]+"']")
               .find('.js-tweet-text-container').next().html("");
 
-			  /*$("div").find("[data-tweet-id='"+tweet_result_arr[i]["data-tweet-id"]+"']")
-              .find('.stream-item-footer').find('.ProfileTweet-actionList.js-actions').append('<div>'+spam_button+'</div>')*/
+			  $("div").find("[data-tweet-id='"+tweet_result_arr[i]["data-tweet-id"]+"']")
+              .find('.stream-item-footer').find('.ProfileTweet-actionList.js-actions').append(not_spam_str);
 
-            }/*else{
+            }else{
+                var spam_str = "" ;
+            	if(is_loggrd_in){
+	            	spam_str = '<div class="ProfileTweet-action ProfileTweet-action--favorite js-toggleState">'+
+	            	'<span style="font-size:14px" class="not_spam" data-tweet-id='+tweet_result_arr[i]["data-tweet-id"]+'>Spam</span>'+
+					'</div>';
+            	}              
+              $("div").find("[data-tweet-id='"+tweet_result_arr[i]["data-tweet-id"]+"']")
+              .find('.stream-item-footer').find('.ProfileTweet-actionList.js-actions').append(spam_str);
+            }
 
-            }*/
             localStorage.setItem(tweet_result_arr[i]["data-tweet-id"], JSON.stringify(tweet_result_arr[i]));
+            localStorage.setItem("tweet_handle", $(".DashboardProfileCard-screennameLink.u-linkComplex.u-linkClean").find(".u-linkComplex-target").text());
   	  	}
 
 };
@@ -119,9 +134,15 @@ $(document).scroll(function() {
 });
 
 // Not spam click event
-$(document).on('click', '#not_spam', function(){
+$(document).on('click', '.not_spam', function(){
 	console.log("not_spam");
-	//send_user_based_feedback(tweet_id, 'pos');
+	send_user_based_feedback($(this).attr("data-tweet-id"), 'pos');
+});
+
+// spam click event
+$(document).on('click', '.spam', function(){
+	console.log("spam");
+	send_user_based_feedback($(this).attr("data-tweet-id"), 'neg');
 });
 
 // Sending feedback from user
@@ -132,14 +153,26 @@ function send_user_based_feedback(tweet_id, label){
 		"label" : label
 	}
 
+	console.log("send_user_based_feedback ---", JSON.stringify(feedback_obj));
+
 	$.ajax({
-        url: "https://seqhack.faasos.io/make_predictions_api",
+        url: "https://hoh.faasos.io/user_feedback",
         type: "POST",
         data: JSON.stringify(feedback_obj),
         dataType:"json",
         contentType: "application/json; charset=utf-8",
         success: function (result) {
-        	console.log("Done");
+        	console.log("Done-----", result);
+
+       		/*var tweet_obj = localStorage.getItem($(this).find('div').attr('data-tweet-id'));
+   			tweet_obj = JSON.parse(tweet_obj);
+   			if(tweet_obj.label == "neg"){
+   				$("div").find("[data-tweet-id='"+tweet_obj["data-tweet-id"]+"']")
+               .find('.TweetTextSize').html(censored_str[Math.floor(Math.random() * 3) + 0]);
+               $("div").find("[data-tweet-id='"+tweet_obj["data-tweet-id"]+"']")
+               .find('.js-tweet-text-container').next().html("");
+   			}*/
+
         },
         error: function (request, status, error) {
             console.log("Error", error);
