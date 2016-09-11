@@ -25,6 +25,7 @@ urlpatterns = [
     url(r'^all_tweets', predict_model.all_tweets, name='all_tweets'),
     url(r'^change_status', predict_model.change_status, name='change_status'),
     url(r'^test_api', predict_model.test_api, name='test_api'),
+    url(r'^change_tweet_status', predict_model.change_tweet_status, name='change_tweet_status'),
     # url(r'^train_model_api', training_model.train_model_api, name='train_model_api'),
     
 ]

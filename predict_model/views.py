@@ -65,3 +65,11 @@ def test_api(request):
   final_data={"confidence":sentiments[1],"label":sentiments[0]}
   return HttpResponse(json.dumps(final_data),status=200,content_type='application/json')  
 
+
+
+def change_tweet_status(request):
+    try:        
+        tweet=predict_model.tweets.objects.all().order_by('-id').values()
+        return render(request, 'tweets_data.html', {"data":tweet})        
+    except Exception, e:
+        return HttpResponse(str(e),status=400,content_type='application/json')
