@@ -23,9 +23,14 @@ class tweets(models.Model):
   created_at=models.DateTimeField(auto_now_add=True)
   updated_at=models.DateTimeField(auto_now=True)
   profile_pic=models.CharField(max_length=255,blank=True)
+  is_trainable=models.BooleanField(default=True)
+
 
   def __str__(self):              # __unicode__ on Python 2
         return self.id
+  def __unicode__(self):
+        return u'%s %s' % (self.id, self.data_tweet_id,self.tweet_text,self.is_trainable,self.machine_label,self.human_label)
+      
   class Meta:       
         db_table = "tweets"
 
