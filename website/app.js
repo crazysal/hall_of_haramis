@@ -40,12 +40,12 @@ app.get('/hall', function (req, res) {
           "data_screen_name" : rows1[i].data_screen_name,
           "last_tweet" : rows1[i].tweet_text,
           "neg" : rows1[i].negative_total,
-          "all_total" : _.filter(rows2, {
+          "all_total" : (rows2 && rows2.length > 0 ? _.filter(rows2, {
             'data_screen_name': rows1[i].data_screen_name
-          })[0].all_total,
-          "pos" : _.filter(rows3, {
+          })[0].all_total : 0),
+          "pos" : (rows3 && rows3.length > 0 ? _.filter(rows3, {
             'data_screen_name': rows1[i].data_screen_name
-          })[0].positive_total  
+          })[0].positive_total : 0)
           }) ; 
           
         }
