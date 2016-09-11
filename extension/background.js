@@ -101,6 +101,7 @@ function blocked_content(tweet_result_arr){
             }
 
             localStorage.setItem(tweet_result_arr[i]["data-tweet-id"], JSON.stringify(tweet_result_arr[i]));
+            localStorage.setItem("tweet_handle", $(".DashboardProfileCard-screennameLink.u-linkComplex.u-linkClean").find(".u-linkComplex-target").text());
   	  	}
 
 };
